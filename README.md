@@ -11,3 +11,4 @@
 - 垃圾回收机制：https://www.niwoxuexi.com/blog/python/article/2011
 - __getattribute__、__getattr__、__setattr__：https://www.cnblogs.com/sheshouxin/p/10448056.html
 - grpc 实现流式上传下载功能：https://www.cnblogs.com/a00ium/p/16937007.html
+- sys._getframe():https://blog.csdn.net/weixin_30920853/article/details/98842243
