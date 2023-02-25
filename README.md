@@ -6,7 +6,7 @@
 
 ##### - Protobuf：https://protobuf.dev/
 
-##### - 代码：https://github.com/grpc/grpc
+##### - grpc实例代码：https://github.com/grpc/grpc
 
 - 垃圾回收机制：https://www.niwoxuexi.com/blog/python/article/2011
 - __getattribute__、__getattr__、__setattr__：https://www.cnblogs.com/sheshouxin/p/10448056.html
