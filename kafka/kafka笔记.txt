@@ -3,3 +3,24 @@
 	https://blog.csdn.net/u010365819/article/details/118581415
 精华文章：https://mp.weixin.qq.com/s?__biz=MzkwMDE1MzkwNQ==&mid=2247496058&idx=1&sn=f3265299d90fde9dd9a4f4afe88411f8&source=41#wechat_redirect
 		https://www.cnblogs.com/javaTank/p/14524038.html
+定义：
+	分布式的基于发布订阅模式的消息队列（Message Queue) 主要应用于大数据实时数据处理领域
+	点对点模式：消息无法重复消费，消费者主动拉取数据，消息收到后消息清除
+	发布订阅模式：消费者消费数据之后不会清除消息；消息可以传给多个消费者组
+		有两种模式，一种类似公众号推送的，队列主动推送消息一种是消费者主动拉取的。
+		kafka采取的是第二种，消费者的消费速度由消费者决定，kafka的这种缺点：消费者需要维护长轮询，查询有没有消息供消费
+
+生产者生产消息
+kafka集群管理消息
+消费者消费消息
+Zookeeper注册消息	
+几个概念：
+	kafka Cluster 集群
+	分区的作用：提高了并发度
+	leader:针对某个topic的某个分区是有lead的
+	follower:分区的数据副本：replication A/0
+	同一个分区中的消息只能被同一个组内的某个消费者消费
+	消费者的数量如果大于分区数目，必然存在消费者等待，不能消费，浪费资源的情况
+	zookeeper:帮kafka存储一些信息，帮消费者存储消费的信息(消费到哪了)， offset 0.9版本存储在zk,0.9以后存在kafka
+	kafka 存消费默认保留7天，是存在磁盘，不是内存
+
