@@ -81,7 +81,7 @@ TCP/IP协议：规定数据的组织形式
 	确认包标识：ACK
 	重发包标识：RST
 	紧急包标识：URG
-
+	三次握手：
 	1.客户端---》服务端：SYN seq=x, ack（抓包看第一次是没有ack的）
 		我们抓包看到的seq有可能是0，这是以为waireshark做了转换，修改下工具配置可以看到这个随机数
 	2.服务端---》客户端：ACK, seq=y, ack=x+1
@@ -89,6 +89,20 @@ TCP/IP协议：规定数据的组织形式
 	3.服务端---》客户端：SYN, seq=y, ack=x+1
 	4.客户端---》服务端：ACK seq=x+1, ack=y+1
 	2和3往往是一起发送的
+
+	四次挥手：
+	1.客户端---》服务端：FIN seq=x, ack=y
+	2.服务端---》客户端：ACK, seq=y, ack=x+1
+	3.服务端---》客户端：FIN,ACK seq=y, ack=x+1
+	4.客户端---》服务端：ACK seq=x+1, ack=y+1
+
+
+	SYN 洪水攻击
+		客户端状态：CLOSED --- SYN_SENT --- ESTABLISHED
+		服务端状态：LISTEN ---  SYN_RCVD --- ESTABLISHED
+
+	DHCP协议：
+	 
 
 
 应用层
