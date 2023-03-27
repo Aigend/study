@@ -27,4 +27,20 @@ SQL93 返回购买 prod_id 为 BR01 的产品的所有顾客的电子邮件（�
 ####SQL94 返回每个顾客不同订单的总金额
 	select cust_id, (select sum(item_price*quantity) from OrderItems group by order_num having OrderItems.order_num = Orders.order_num) total_ordered from Orders order by total_ordered desc
 
-	
+SQL95 从 Products 表中检索所有的产品名称以及对应的销售总数
+	SELECT
+	    prod_name,
+	    (
+		SELECT
+		    sum(quantity)
+		FROM
+		    OrderItems
+		WHERE 
+		    OrderItems.prod_id=Products.prod_id
+		GROUP BY
+		    prod_id
+	    )
+	FROM Products;
+SQL96 返回顾客名称和相关订单号
+	#1.select cust_name , (select order_num from Orders where Orders.cust_id = Customers.cust_id) as p from Customers order by cust_name asc , p asc
+	#2.select c.cust_name,o.order_num from Customers c inner join Orders o on c.cust_id = o.cust_id order by c.cust_name asc , o.order_num asc
