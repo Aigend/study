@@ -1,3 +1,5 @@
+AB10_反转链表
+
 # class ListNode:
 #     def __init__(self, x):
 #         self.val = x
@@ -15,7 +17,6 @@ class Solution:
         if not head:
             return head
         pre = None
-        
         while head:
             temp = head.next
             head.next=pre
