@@ -1,3 +1,5 @@
+##面试kmp##_求next数组
+
 """
 https://blog.csdn.net/yearn520/article/details/6729426
 看懂原理算法实现就比较简单了
@@ -32,4 +34,3 @@ def set_prefix(pattern:str, next=[]):
       next[i] = k+1
    else:
       next[i] = 0
-      
