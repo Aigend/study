@@ -1,9 +1,4 @@
-# !/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @project : leetcode
-# @File    : BM57 岛屿数量.py
-# @Date    : 2022/09/05:22:14
-# @Author  : jinwenlong@oppo.com
+BM57 岛屿数量##深度优先##dfs##
 #
 # 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
 #
