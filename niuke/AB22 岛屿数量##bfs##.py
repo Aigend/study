@@ -1,14 +1,10 @@
+AB22 岛屿数量##bfs##
+
 """
 给一个01矩阵，1代表是陆地，0代表海洋， 如果两个1相邻，那么这两个1属于同一个岛。我们只考虑上下左右为相邻。
 岛屿: 相邻陆地可以组成一个岛屿（相邻:上下左右） 判断岛屿个数。
 """
-#
-# 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
-#
-# 判断岛屿数量
-# @param grid char字符型二维数组 
-# @return int整型
-#
+
 from queue import Queue
 class Solution:
     def solve(self , grid: List[List[str]]) -> int:

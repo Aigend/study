@@ -13,6 +13,11 @@
 class Solution:
     def cutRope(self , number: int) -> int:
         # write code here
+        # //不超过3直接计算
+        # if(target <= 3)
+        #     return target- 1;
+        # //dp[i]表示长度为i的绳子可以被剪出来的最大乘积
+        
         dp = [0 for _ in range(number+1)]
 
         dp[1] = 1
