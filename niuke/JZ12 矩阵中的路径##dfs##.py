@@ -7,14 +7,7 @@
   矩阵中包含一条字符串"bcced"的路径，但是矩阵中不包含"abcb"路径，因为字符串的第一个字符b占据了矩阵中的第一行第二个格子之后，路径不能再次进入该格子。
 数据范围：0 \le n,m \le 20\0≤n,m≤20 ,1\le len \le 25\1≤len≤25 
 """
-#
-# 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
-#
-# 
-# @param matrix char字符型二维数组 
-# @param word string字符串 
-# @return bool布尔型
-#
+
 class Solution:
     def hasPath(self , matrix: List[List[str]], word: str) -> bool:
         # write code here
