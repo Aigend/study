@@ -1,9 +1,15 @@
-# !/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @project : py_study
 # @File    : BM89 合并区间.py
 # @Date    : 2022/06/28:23:47
-# @Author  : jinwenlong@oppo.com
+"""
+描述
+给出一组区间，请合并所有重叠的区间。
+请保证合并后的区间按区间起点升序排列。
+输入：
+[[10,30],[20,60],[80,100],[150,180]]
+
+返回值：
+[[10,60],[80,100],[150,180]]
+"""
 from typing import List
 
 
@@ -17,13 +23,7 @@ class Interval:
 
     def __repr__(self):
         return str(self.start) + "_" + str(self.end)
-#
-# 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
-#
-#
-# @param intervals Interval类一维数组
-# @return Interval类一维数组
-#
+
 class Solution:
     def merge(self, intervals: List[Interval]) -> List[Interval]:
         # write code here
@@ -61,6 +61,4 @@ class Solution:
 
 
 if __name__ == '__main__':
-    # Solution().merge([Interval(10,30), Interval(20, 60), Interval(80,100), Interval(150, 180)])
-
     print(Solution().merge([Interval(2, 3), Interval(1, 4)]))

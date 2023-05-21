@@ -1,9 +1,11 @@
-# !/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @project : py_study
+
 # @File    : BM84 最长公共前缀.py
 # @Date    : 2022/07/03:21:12
-# @Author  : jinwenlong@oppo.com
+"""
+描述
+给你一个大小为 n 的字符串数组 strs ，其中包含n个字符串 , 
+编写一个函数来查找字符串数组中的最长公共前缀，返回这个公共前缀。
+"""
 from typing import List
 
 
@@ -28,6 +30,3 @@ class Solution:
                 if flag:
                     break
             return "".join(result)
-
-
-

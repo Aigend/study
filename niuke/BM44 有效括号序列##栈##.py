@@ -1,16 +1,23 @@
-# !/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @project : py_study
-# @File    : BM44 有效括号序列.py
-# @Date    : 2022/07/25:22:55
-# @Author  : jinwenlong@oppo.com
+# python实现有效的括号判断##栈##
+
+# 题目描述
+# 给定一个只包括 '(',')','{','}','[',']'的字符串 s ，判断字符串是否有效。
 #
-# 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+# 有效字符串需满足：
 #
-#
-# @param s string字符串
-# @return bool布尔型
-#
+# 左括号必须用相同类型的右括号闭合。
+# 左括号必须以正确的顺序闭合
+class Solution:
+    def isValid(self, s: str) -> bool:
+        dic = {'{': '}', '[': ']', '(': ')', '?': '?'}
+        stack = ['?']
+        for c in s:
+            if c in dic:
+                stack.append(c)
+            elif dic[stack.pop()] != c:
+                return False
+        return len(stack) == 1
+
 class Solution:
     def isValid(self, s):
         # write code here

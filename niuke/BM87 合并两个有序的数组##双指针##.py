@@ -37,6 +37,7 @@ class Solution:
         print(A)
         return A
 
+    # 下面的即是解
     def solution(self , A, m, B, n):
         # write code here
 #         A += [None]*n

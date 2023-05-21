@@ -1,9 +1,6 @@
-# !/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @project : leetcode
+
 # @File    : JZ8 二叉树的下一个结点.py
 # @Date    : 2022/08/08:21:17
-# @Author  : jinwenlong@oppo.com
 class Solution:
     """
     输入分为2段，第一段是整体的二叉树，第二段是给定二叉树节点的值，
@@ -49,7 +46,6 @@ class Solution1:
         if root == None:
             return
         self.InOrder(root.left)
+
         self.nodes.append(root)
         self.InOrder(root.right)
-
-

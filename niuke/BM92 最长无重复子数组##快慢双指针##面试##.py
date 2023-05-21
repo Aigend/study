@@ -1,17 +1,6 @@
-# !/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @project : py_study
 # @File    : BM92 最长无重复子数组.py
 # @Date    : 2022/06/29:23:48
-# @Author  : jinwenlong@oppo.com
 
-#
-# 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
-#
-#
-# @param arr int整型一维数组 the array
-# @return int整型
-#
 from typing import List
 
 class Solution:

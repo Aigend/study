@@ -1,17 +1,12 @@
-# !/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @project : leetcode
-# @File    : JZ7 重建二叉树.py
+# @File    : JZ7 重建二叉树##递归##面试##.py
 # @Date    : 2022/08/08:20:28
-# @Author  : jinwenlong@oppo.com
+
 class TreeNode:
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
 
-
-#
 # 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
 #
 #
