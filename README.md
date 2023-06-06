@@ -114,3 +114,63 @@ modbus:
   它是一 个 Web 服务器（如 nginx，uWSGI 等服务器）与 web 应用（如用 Flask 框架写的程序）通信的一种 规范。WSGI协议其实是定义了一种server与application解耦的规范，即可以有多个实现WSGI server的服务器，也可以有多个实现WSGI application的框架，那么就可以选择任意的server和application组合实现自己的web应用。例如uWSGI和Gunicorn都是实现了WSGI server协议的服务器，Django，Flask是实现了WSGI application协议的web框架，可以根据项目实际情况搭配使用。
  uwsgi
   同WSGI一样是一种通信协议，uWSGI是实现了uwsgi和WSGI两种协议的Web服务器
+  
+  
+pyenv install [options] 
+ -f/--force :强制安装，即使该版本已经安装过了
+ -s/--skip-existing :跳过已经安装过的版本
+ -v/--verbose:输出安装过程中的详细状态信息
+
+安装pyenv-virtualenv
+ git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
+
+pyenv install --list # pyenv的install命令，可以查看pyenv当前支持哪些Python版本
+pyenv install -v 3.8.1 # 使用pyenv安装不同的Python版本
+v=3.6.9; wget https://npm.taobao.org/mirrors/python/$v/Python-$v.tar.xz -P ~/.pyenv/cache/; pyenv install $v 
+
+pyenv version # 检查 pyenv 的版本
+ [root@python ~]# pyenv version
+ (set by /root/.pyenv/version)
+pyenv versions # 查看当前系统中包含的Python版本
+ [root@python ~]# 
+ * system (set by /root/.pyenv/version)
+  2.7.13
+  3.8.1
+pyenv global 2.7.13 # 
+ 使用pyenv以后，可以快速切换Python的版本。切换Python版本以后，与版本相关的依赖也会一起切 换。因此，我们不用担心不同的版本在系统中是否会相互干扰。例如，切换Python版本以后，相应的 pip也会跟着切换，所以不用担心自己使用的pip版本和Python版本不匹配的问题
+ [root@python ~]# pyenv global 3.8.1
+ [root@python ~]# pip --version
+  pip 19.2.3 from /root/.pyenv/versions/3.8.1/lib/python3.8/site-packages/pip (python 3.8)
+pyenv rehash # 安装新版本后rehash一下
+
+pyenv global 3.6.5 2.7.14 # 指定多个全局版本, 3版本优先
+pyenv uninstall 2.7.10 # 删除Python版本，使用uninstall命令即可。
+
+
+1、# //关闭can设备；ip link set can1 down
+2、# //开启can设备；ip link set can1 up
+3、# //显示can设备详细信息；ip -details link show can1
+4、#candump canX //接收can总线发来的数据；
+5、#ifconfig canX down //关闭can设备，以便配置;
+6、#ip link set canX up type can bitrate 250000 //设置can波特率
+7、#conconfig canX bitrate + 波特率；
+8、#canconfig canX start //启动can设备；
+9、#canconfig canX ctrlmode loopback on //回环测试；
+10、#canconfig canX restart // 重启can设备；
+11、#canconfig canX stop //停止can设备；
+12、#canecho canX //查看can设备总线状态；
+13、#cansend canX --identifier=ID+数据 //发送数据；
+14、#candump canX --filter=ID：mask//使用滤波器接收ID匹配的数据
+ifconfig can0 down;
+ip link set can0 up type can bitrate 125000 triple-sampling on;
+ifconfig can0 up;
+candump any
+candump can0 //接收can总线发来的数据
+cansend can0 --identifier=0x123 0xab //发送数据；
+也可以使用 ip 命令直接设定位速率：
+ip link set can0 type can bitrate 125000
+当设置完成后，可以通过下面的命令查询 can0 设备的参数设置：
+ip -details link show can0
+当设置完成后，可以使用下面的命令使能 can0 设备：
+ifconfig can0 down
+ifconfig can0 up
