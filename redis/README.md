@@ -1,5 +1,42 @@
 # py_redis
 python redis 学习
+
+sudo apt-get install redis-server
+# Linux系统：进入redis安装目录启动redis服务
+redis-server /etc/redis/redis.conf 
+# 打开redis交互命令行，用于测试(可选)
+redis-cli.exe -h 127.0.0.1 -p 6379 # windows系统下另打开一个窗口
+redis-cli # linux系统
+
+由于redis默认绑定本机的，所以第一步取消该设置：
+#编辑配置文件
+sudo vim /etc/redis/redis.conf
+用vim打开该配置文件后，注释掉下面这行：
+# bind 127.0.0.1
+#找到下面这一行并去除注释，未修改之前：
+#requirepass foobared
+#修改成：
+requirepass your_pwd #设置新的密码
+
+1.shutdown
+2.ping
+3.auth super@man
+4.select 3
+ 10.143.16.44:6379> select 3
+ OK
+ 10.143.16.44:6379[3]>
+5.expire key seconds
+pexpire key milliseconds
+persist key # 设置永不过期
+6.ttl key
+7.pttl key # 毫秒语法 -1：永远不过期
+8.move javastack 2 # 把javastack移到2号数据库
+9.type key
+10.dbsize
+11.exists key [key ...] # 查询查询多个，返回存在的个数
+12.del key [key ...] # 可以删除多个，返回删除成功的个数
+13.rename key newkey # rename javastack javastack123
+
 什么是连接池
 通常情况下, 当我们需要做redis操作时, 会创建一个连接, 并基于这个连接进行redis操作, 操作完成后, 释放连接,
 
