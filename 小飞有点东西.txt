@@ -1,0 +1,87 @@
+# 第一种使用方法
+import queue
+queue.Queue()
+# 第二种使用方法
+from multiprocessing import queues
+queues.Queue()
+# 第三种用法
+from multiprocessing import Queue
+q = Queue(6)  # maxsize 消息队列最大保存的消息数目
+		  # 不传值，默认为326767
+# 队列是先进先出
+q.put('a')
+q.put('b')
+q.put('c')
+q.put('d')
+q.put('e')
+q.put('f')
+
+print(q.full()) # 判断队列是否满了
+
+q.put('h')  # 存第个元素的时候程序阻塞
+q.put_nowait('h')  # raise Full 报错，queue.Full
+q.put('h', timeout=3)  # 3s之内还是满的，会报错
+
+v1 = q.get()
+print(v1)
+v2 = q.get()
+v3 = q.get()
+v4 = q.get()
+v5 = q.get()
+v6 = q.get()
+
+print(q.empty())
+
+v7 = q.get()  # 阻塞，什么时候有数据，继续往下执行
+v7 = q.get_nowait()  # 无数据报错 raise Empty _queue.Empty
+v7 = q.get(timeout=3) # 无数据等待3s,3s后仍无数据就报错
+
+"""
+q.put()
+q.get()
+q.full()
+q.empty()
+q.put_nowait()
+q.get_nowait()
+这四个函数在多进程极限条件下可能不太准确，这个进程刚满了，存数据报错，下一个进程可能就取了数据
+"""
+
+池的概念：
+	保证计算机硬件安全，最大限度的利用计算机的资源，降低了程序的运行效率，也保证了计算机硬件的安全
+
+进程池
+线程池
+
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+pool=ThreadPoolExecutor()
+		max_workers = min(32, (os.cpu_count() or 1) + 4) # 开设的线程数
+
+pool.submit(fn, /, *args, **kwargs) # submit是异步提交
+
+	#如果你想要函数的调用者在某个参数位置只能使用位置参数而不能使用关键字参数传参，那么你只需要在所需位置后面放置一个/
+	def f1(a, *, b, c):
+	#希望强迫调用者使用某些参数，且必须以关键字参数的形式传参，那么你只需要在所需位置的前一个位置放置一个*
+
+同步提交：提交之后，原地等待任务的结果
+异步提交：任务提交之后不等待，继续往下执行
+线程池和信号量的区别：
+	信号量是锁，线程是自己创建的，控制线程的执行，阻塞
+	线程池是由线程池创建线程，控制线程的数量
+
+不等待任务的返回结果，怎么获取方法的返回结果
+
+ 
+import gevent
+gevent.monkey_patch_all()
+import time
+def test(name):
+    for i in range(100):
+        time.sleep(1)
+        print(name, i)
+def run():
+    gevent.spawn(test, "aaa")
+    gevent.spawn(test, "bbb")
+    time.sleep(50)
+g = spawn(run)
+print("***")
+g.join()

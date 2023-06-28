@@ -1,0 +1,52 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//您正在使用proto3语法：如果您不这样做，protobuf 编译器将假定您正在使用proto2。这必须是文件的第一个非空的非注释行
+syntax = "proto3";
+
+option java_package = "ex.grpc";
+option objc_class_prefix = "HSW";
+
+package hellostreamingworld;
+
+// The greeting service definition.
+service MultiGreeter {
+  // Sends multiple greetings
+  rpc sayHello (HelloRequest) returns (stream HelloReply) {}
+}
+
+// The request message containing the user's name and how many greetings
+// they want.
+message HelloRequest {
+  //字段编号作为唯一标识符，不应更改。它从 1 开始，1 到 15 范围内的数字需要一个字节来编码。另一方面，16 到 2047 //范围内的数字需要两个字节进行编码
+  string name = 1;
+  string num_greetings = 2;
+}
+
+// A response message containing a greeting
+message HelloReply {
+  string message = 1;
+  //必须有一个零值，以便我们可以使用0作为数字默认值
+  //零值必须是第一个元素，以便与proto2语义兼容，其中第一个枚举值始终是默认值
+  enum Corpus {
+    UNIVERSAL = 0;//Corpus枚举的第一个常量映射为零：每个枚举定义必须包含一个映射到零的常量作为其第一个元素
+    WEB = 1;
+    IMAGES = 2;
+    LOCAL = 3;
+    NEWS = 4;
+    PRODUCTS = 5;
+    VIDEO = 6;
+  }
+  Corpus corpus = 2;
+}

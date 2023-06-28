@@ -1,0 +1,111 @@
+分组数据：
+SQL86 返回每个订单号各有多少行数
+	select order_num, count(order_num) as order_lines from OrderItems group by order_num order by order_lines
+SQL87 每个供应商成本最低的产品
+	select vend_id, min(prod_price) cheapest_item from Products group by vend_id order by cheapest_item
+SQL88 返回订单数量总和不小于100的所有订单的订单号
+	select order_num from OrderItems group by order_num having sum(quantity) >= 100 order by order_num 
+SQL89 计算总和
+	select order_num, sum(item_price*quantity) total_price from OrderItems group by order_num having total_price >= 1000 order by order_num
+SQL90 纠错3
+	SELECT order_num, COUNT(*) AS items 
+	FROM OrderItems 
+	GROUP BY order_num 
+	HAVING COUNT(*) >= 3 
+	ORDER BY items, order_num;
+
+
+使用子查询
+SQL91 返回购买价格为 10 美元或以上产品的顾客列表
+	select distinct cust_id from Orders where order_num in (select distinct order_num from OrderItems where item_price>=10);
+SQL92 确定哪些订单购买了 prod_id 为 BR01 的产品（一）
+	select cust_id, order_date from Orders where order_num in (select order_num from OrderItems where prod_id="BR01")
+SQL93 返回购买 prod_id 为 BR01 的产品的所有顾客的电子邮件（一
+	select cust_email from Customers where cust_id in (select cust_id from Orders where order_num in (select order_num from OrderItems where prod_id="BR01"))
+
+# 有点挑战
+####SQL94 返回每个顾客不同订单的总金额
+	select cust_id, (select sum(item_price*quantity) from OrderItems group by order_num having OrderItems.order_num = Orders.order_num) total_ordered from Orders order by total_ordered desc
+
+SQL95 从 Products 表中检索所有的产品名称以及对应的销售总数
+	SELECT
+	    prod_name,
+	    (
+		SELECT
+		    sum(quantity)
+		FROM
+		    OrderItems
+		WHERE 
+		    OrderItems.prod_id=Products.prod_id
+		GROUP BY
+		    prod_id
+	    )
+	FROM Products;
+SQL96 返回顾客名称和相关订单号
+	#1.select cust_name , (select order_num from Orders where Orders.cust_id = Customers.cust_id) as p from Customers order by cust_name asc , p asc
+	#2.select c.cust_name,o.order_num from Customers c inner join Orders o on c.cust_id = o.cust_id order by c.cust_name asc , o.order_num asc
+SQL97 返回顾客名称和相关订单号以及每个订单的总价
+	select
+	    cust_name,
+	    OrderItems.order_num,
+	    quantity * item_price as OrderTotal
+	from
+	    (
+		select
+		    cust_name,
+		    order_num
+		from
+		    Customers
+		    inner join Orders on Customers.cust_id = Orders.cust_id
+	    ) temp
+	    inner join OrderItems on temp.order_num = OrderItems.order_num
+	order by
+	    cust_name
+
+SQL98 确定哪些订单购买了 prod_id 为 BR01 的产品（二）
+	select cust_id, order_date from Orders where order_num in (select order_num from OrderItems where prod_id ="BR01") order by order_date
+SQL99 返回购买 prod_id 为 BR01 的产品的所有顾客的电子邮件（二）
+	select
+	    cust_email
+	from
+	    Customers
+	    inner join (
+		select distinct
+		    cust_id
+		from
+		    Orders
+		where
+		    order_num in (
+			select
+			    order_num
+			from
+			    OrderItems
+			where
+			    prod_id = "BR01"
+		    )
+	    ) temp on Customers.cust_id = temp.cust_id
+
+SQL100 确定最佳顾客的另一种方式（二）
+select
+    cust_name,
+    tmp.total_price
+from
+    Customers
+    inner join (
+        select
+            cust_id,
+            total_price
+        from
+            Orders
+            inner join (
+                select
+                    order_num,
+                    sum(item_price * quantity) total_price
+                from
+                    OrderItems
+                group by
+                    order_num
+                having
+                    total_price >= 1000
+            ) temp on Orders.order_num = temp.order_num
+    ) tmp on Customers.cust_id = tmp.cust_id order by tmp.total_price

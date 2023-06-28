@@ -1,0 +1,33 @@
+Python生成对应的源代码
+	安装Python的gRPC源码包grpcio，用于执行gRPC的各种底层协议和请求响应方法
+	安装Python基于gRPC的proto生成python源代码的工具grpcio-tools
+
+python -m grpc_tools.protoc --python_out=.  --grpc_python_out=.  -I. test.proto
+	python -m grpc_tools.protoc: python 下的 protoc 编译器通过 python 模块(module) 实现, 所以说这一步非常省心
+	--python_out=. : 编译生成处理 protobuf 相关的代码的路径, 这里生成到当前目录
+	--grpc_python_out=. : 编译生成处理 grpc 相关的代码的路径, 这里生成到当前目录
+	-I. 
+	test.proto : proto 文件的路径, 这里的 proto 文件在当前目录
+
+test_pb2.py: 用来和 protobuf 数据进行交互，这个就是根据proto文件定义好的数据结构类型生成的python化的数据结构文件
+test_pb2_grpc.py: 用来和 grpc 进行交互，这个就是定义了rpc方法的类，包含了类的请求参数和响应等等，可用python直接实例化调用
+
+最佳实践
+	编写proto文件的时候，注意定义好数据的格式，要多考虑可扩张性，
+		例如可以定义api_version等用于区分版本，防止未来的版本有大的数据格式更新的时候可以兼容；
+	对于不可变类型，建议使用枚举，例如请求一个字段type，取值是固定的时候，可以用枚举类型；
+	对于服务端和客户端的编写，建议指定好最大接收和发送大小，避免出现数据溢出的异常；
+	gRPC偶尔会出现断线重连的情况，所以要增加异常处理机制，捕获到由于重连时引发远程调用失败的问题，则可以执行重试(会在接下来的文章中详细说明)；
+	gRPC可以采用SSL或TLS的协议，实现http2.0加密传输，提高系统的安全性(会在接下来的文章中详细说明)；
+	对于流量、并发较大的服务，可以通过微服务的一些应用或组件(如istio)等实现流量的熔断、限流等等，提高稳定性。
+
+protobuf:
+	package用于proto,在引用时起作用;package是proto的包名,一个文件就是一个package,用于import时解析
+	import "pfoo/foo.proto"
+	假设这个foo.proto 声明了:package demo
+	那么我们在其他包就要使用:demo.xxx 来引用foo.proto这个文件(package demo这个包)所声明的类型
+		这里pfoo/foo.proto是相对路径,取决于使用protoc -I  (大写i)传入时的搜索路径
+	eg:
+		syntax = "proto3";
+		package enumx;
+		option go_package = "github.com/wymli/bc_sns/dep/pb/go/enumx;enumx";

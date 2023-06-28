@@ -1,0 +1,49 @@
+描述
+N 皇后问题是指在 n * n 的棋盘上要摆 n 个皇后，
+要求：任何两个皇后不同行，不同列也不在同一条斜线上，
+求给一个整数 n ，返回 n 皇后的摆法数。
+
+n个皇后，不同行不同列，那么肯定棋盘每行都会有一个皇后，每列都会有一个皇后。如果我们确定了第一个皇后的行号与列号，
+则相当于接下来在n−1行中查找n−1个皇后，这就是一个子问题，因此使用递归：
+
+终止条件： 当最后一行都被选择了位置，说明n个皇后位置齐了，增加一种方案数返回。
+返回值： 每一级要将选中的位置及方案数返回。
+本级任务： 每一级其实就是在该行选择一列作为该行皇后的位置，遍历所有的列选择一个符合条件的位置加入数组，然后进入下一级。
+
+具体做法：
+step 1：对于第一行，皇后可能出现在该行的任意一列，我们用一个数组pos记录皇后出现的位置，下标为行号，元素值为列号。
+step 2：如果皇后出现在第一列，那么第一行的皇后位置就确定了，接下来递归地在剩余的n−1行中找n−1个皇后的位置。
+step 3：每个子问题检查是否符合条件，我们可以对比所有已经记录的行，对其记录的列号查看与当前行列号的关系：即是否同行、同列或是同一对角线。
+
+class Solution:
+    # 判断皇后是否符合条件
+    def isValid(self, pos: List[int], row: int, col: int):
+        # 遍历所有已经记录的行
+        for i in range(row):
+            # 不能同行同列同一斜线
+            if row == i or col == pos[i] or abs(row - i) == abs(col - pos[i]):
+                return False
+        return True
+
+    # 递归查找皇后种类
+    def recursion(self, n: int, row: int, pos: List[int], res: list):
+        # 完成全部行都选择了位置
+        if row == n:
+            res[0] += 1
+            return
+        # 遍历所有列
+        for i in range(n):
+            # 检查该位置是否符合条件
+            if self.isValid(pos, row, i):
+                # 加入位置
+                pos[row] = i
+                # 递归继续查找
+                self.recursion(n, row + 1, pos, res)
+
+    def Nqueen(self, n: int) -> int:
+        res = [0, ]
+        # 下标为行号，元素为列号，记录皇后位置
+        pos = [0] * n
+        # 递归
+        self.recursion(n, 0, pos, res)
+        return res[0]

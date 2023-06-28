@@ -3,6 +3,14 @@ FROM ubuntu:20.04
 WORKDIR /tmp
 RUN chmod 777 /tmp
 
+COPY ./requirements.txt requirements.txt
+COPY ./buildMpc.sh buildMpc.sh
+COPY ./makeApk.sh makeApk.sh
+COPY ./opt.tar.gz /
+COPY ./gradle.tar.gz /
+RUN  tar -zxvf /opt.tar.gz -C / && rm -rf /opt.tar.gz \
+     && tar -zxvf /gradle.tar.gz -C / && rm -rf /gradle.tar.gz
+
 RUN apt-get -qq update && DEBIAN_FRONTEND="noninteractive" apt-get -qq install -y \
     apt-utils \
     cmake \
@@ -10,6 +18,7 @@ RUN apt-get -qq update && DEBIAN_FRONTEND="noninteractive" apt-get -qq install -
     wget \
     curl \
     doxygen \
+    zip \
     unzip \
     vim \
     git \
@@ -44,76 +53,39 @@ RUN apt-get -qq update && DEBIAN_FRONTEND="noninteractive" apt-get -qq install -
     ia32-libs \
     && apt-get clean
 
-ARG  JDK_VERSION=11.0.2
-COPY .pyenv /usr/local/.pyenv
-COPY ./requirements.txt requirements.txt
-ADD  ./openjdk-${JDK_VERSION}_linux-x64_bin.tar.gz /usr/local
+ARG JDK_VERSION=11.0.2
+ARG NDK_VERSION=21.3.6528147
+ARG QT=6.3.2
+ARG QT_ARCH=android_armv7
+RUN  wget https://mirrors.huaweicloud.com/java/jdk/${JDK_VERSION}+9/jdk-${JDK_VERSION}_linux-x64_bin.tar.gz \
+     && tar -zxvf ./jdk-${JDK_VERSION}_linux-x64_bin.tar.gz -C /usr/local \
+     && rm -rf ./jdk-${JDK_VERSION}_linux-x64_bin.tar.gz \
+     && wget https://gh.flyinbug.top/gh/https://github.com/pyenv/pyenv/archive/refs/heads/master.zip \
+     && unzip master.zip \
+     && mv pyenv-master /usr/local/.pyenv \
+     && rm -rf master.zip
 
-#RUN echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc \
-#    && echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc \
-#    && echo 'eval "$(pyenv init -)"' >> ~/.bashrc 
-
-ARG NDK_VERSION=21.3.6528147 \
-ENV PYENV_ROOT /usr/local/.pyenv \
-    JAVA_HOME=/usr/local/jdk-${JDK_VERSION} \
-    ANDROID_HOME=/usr/local/android-sdk \
-    PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:${JAVA_HOME}/bin:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools/bin/:${ANDROID_HOME}/ndk/${NDK_VERSION}/:$PATH
+ENV TZ=Asia/Shanghai
+ENV JAVA_HOME=/usr/local/jdk-${JDK_VERSION}
+ENV ANDROID_HOME=/opt/android/sdk
+ENV ANDROID_NDK_ROOT=${ANDROID_HOME}/ndk/${NDK_VERSION}/
+ENV QT_PLUGIN_PATH=/opt/Qt/${QT}/gcc_64/plugins/
+ENV QML_IMPORT_PATH=/opt/Qt/${QT}/gcc_64/qml/
+ENV QML2_IMPORT_PATH=/opt/Qt/${QT}/gcc_64/qml/
+ENV PATH=${JAVA_HOME}/bin:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools/bin/:/opt/Qt/${QT}/gcc_64/bin:$PATH
+ENV PYENV_ROOT=/usr/local/.pyenv
+ENV PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
 ARG PYTHON_VERSION=3.9.0
-RUN mkdir ~/.pyenv/cache \
-    && wget https://npm.taobao.org/mirrors/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tar.xz -P ~/.pyenv/cache/ \
+RUN mkdir -p /usr/local/.pyenv/cache \
+    && wget https://npm.taobao.org/mirrors/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tar.xz -P /usr/local/.pyenv/cache/ \
     && pyenv install $PYTHON_VERSION \
     && pyenv global $PYTHON_VERSION \
-    && python3 -m pip install -q -r requirements.txt
+    && echo "****python begin install packages in requirements.txt****" \
+    && python3 -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple/ -r requirements.txt
 
-RUN wget -q https://github.com/google/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-x86_64.zip \
-    && unzip -q protoc-3.6.1-linux-x86_64.zip \
-    && mv ./bin/protoc /usr/local/bin \
-    && mv ./include/google /usr/local/include \
-    && protoc --version
+RUN mv /usr/local/.pyenv/versions/3.9.0/lib/python3.9/site-packages/xlrd/xlsx.py /usr/local/.pyenv/versions/3.9.0/lib/python3.9/site-packages/xlrd/bak_xlsx.py
+COPY ./xlsx.py /usr/local/.pyenv/versions/3.9.0/lib/python3.9/site-packages/xlrd/xlsx.py
 
-#ARG ANDROID_VERSION=r22b
-#RUN wget -q https://dl.google.com/android/repository/android-ndk-${ANDROID_VERSION}-linux-x86_64.zip \
-#    && unzip -q android-ndk-${ANDROID_VERSION}-linux-x86_64.zip \
-#    && mv ./android-ndk-${ANDROID_VERSION} ~/android-ndk-${ANDROID_VERSION}
-#ENV NDK=~/android-ndk-${ANDROID_VERSION}
-#ENV PATH=$NDK:$PATH
-#RUN ./sdkmanager "build-tools;30.0.3" "platforms;android-30"
 
-#RUN mkdir /opt/qt
-#ARG QT=6.3.2
-#ARG QT_MODULES=all
-#ARG QT_HOST=linux
-#ARG QT_TARGET=android
-#ARG QT_ARCH=android_armv7
-#RUN python3 -m aqt install-qt --outputdir /opt/qt ${QT_HOST} ${QT_TARGET} ${QT} ${QT_ARCH} -m #${QT_MODULES} --autodesktop
-#ENV TZ=Asia/Shanghai \
-#    PATH=/opt/qt/${QT}/gcc_64/bin:$PATH \
-#    QT_PLUGIN_PATH=/opt/qt/${QT}/gcc_64/plugins/ \
-#    QML_IMPORT_PATH=/opt/qt/${QT}/gcc_64/qml/ \
-#    QML2_IMPORT_PATH=/opt/qt/${QT}/gcc_64/qml/
-
-#RUN git clone -b v$QT https://github.com/qt/qtwebsockets.git \
-#    && cd qtwebsockets \
-#    && git switch -c $QT \
-#    && mkdir build \
-#    && cmake ../ \
-#    && make \
-#    && make install 
-
-#RUN git clone -b v$QT https://ghproxy.com/https://github.com/qt/qtmqtt.git \
-#    && cd qtmqtt \
-#    && git switch -c $QT \
-#    && mkdir build \
-#    && cd build \
-#    && rm -rf ./* \
-#    && cmake ../ \
-#    && echo "begin make -j8 operate" \
-#    && make -j8
-
-#RUN make distclean
-#RUN cd WindowManger/protocol && bash generateAll.sh arm-android
-#RUN qmake CONFIG+=debug CONFIG+=qml_debug
-#RUN make -j8
-#RUN make apk
 
