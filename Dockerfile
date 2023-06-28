@@ -50,6 +50,7 @@ RUN apt-get -qq update && DEBIAN_FRONTEND="noninteractive" apt-get -qq install -
     libxkbcommon-x11-0 \
     libwayland-cursor0 \
     libclang-dev  \
+    ia32-libs \
     && apt-get clean
 
 ARG JDK_VERSION=11.0.2
@@ -85,3 +86,6 @@ RUN mkdir -p /usr/local/.pyenv/cache \
 
 RUN mv /usr/local/.pyenv/versions/3.9.0/lib/python3.9/site-packages/xlrd/xlsx.py /usr/local/.pyenv/versions/3.9.0/lib/python3.9/site-packages/xlrd/bak_xlsx.py
 COPY ./xlsx.py /usr/local/.pyenv/versions/3.9.0/lib/python3.9/site-packages/xlrd/xlsx.py
+
+
+
