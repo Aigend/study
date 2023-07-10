@@ -1,3 +1,8 @@
+can 通信：
+ https://zhuanlan.zhihu.com/p/538834760
+ https://blog.csdn.net/weixin_45403142/article/details/120075619
+ https://blog.csdn.net/LiuXF93/article/details/113729294
+
 关闭can设备；ip link set can1 down
 开启can设备；ip link set can1 up
 显示can设备详细信息；ip -details link show can1
