@@ -1,0 +1,27 @@
+关闭can设备；ip link set can1 down
+开启can设备；ip link set can1 up
+显示can设备详细信息；ip -details link show can1
+candump canX //接收can总线发来的数据；
+ifconfig canX down //关闭can设备，以便配置;
+ip link set canX up type can bitrate 250000 //设置can波特率
+conconfig canX bitrate + 波特率；
+canconfig canX start //启动can设备；
+canconfig canX ctrlmode loopback on //回环测试；
+canconfig canX restart // 重启can设备；
+canconfig canX stop //停止can设备；
+canecho canX //查看can设备总线状态；
+cansend canX --identifier=ID+数据 //发送数据；
+candump canX --filter=ID：mask//使用滤波器接收ID匹配的数据
+ifconfig can0 down;
+ip link set can0 up type can bitrate 125000 triple-sampling on;
+ifconfig can0 up;
+candump any
+candump can0 //接收can总线发来的数据
+cansend can0 --identifier=0x123 0xab //发送数据；
+也可以使用 ip 命令直接设定位速率：
+ip link set can0 type can bitrate 125000
+当设置完成后，可以通过下面的命令查询 can0 设备的参数设置：
+ip -details link show can0
+当设置完成后，可以使用下面的命令使能 can0 设备：
+ifconfig can0 down
+ifconfig can0 up
