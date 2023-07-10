@@ -1,0 +1,13 @@
+boost库实现python和C通信：
+ 教程：https://blog.csdn.net/rangfei/category_11569812.html
+ # 官方网站
+  https://www.boost.org/
+  # 下载地址
+  https://www.boost.org/users/download/
+  # 预编译版本下载地址
+  https://sourceforge.net/projects/boost/files/boost-binaries/
+  wget https://boostorg.jfrog.io/artifactory/main/release/1.73.0/source/boost_1_73_0.tar.bz2 --no-check-certificate
+  tar xvf boost_1_73_0.tar.bz2
+  cd boost_1_73_0
+  ./boostrap.sh
+  ./b2 --buildtype=complete install
