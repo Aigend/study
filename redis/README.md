@@ -7,10 +7,6 @@ sudo apt update
 sudo apt install redis-server
 
 ```
-/etc/redis/redis.conf
-#bind 127.0.0.1
-requirepass 密码
-port 6379
 # 查看状态
 systemctl status redis-server.service
 # 启动
@@ -21,8 +17,6 @@ systemctl stop redis-server.service
 systemctl restart redis-server.service
 # 设置开机启动
 systemctl enable redis-server.service
-10.143.12.147:未配置密码和远程访问，已配置开机自启动
-macos 本地：未配置密码和远程访问，已配置开机自启动
 ```
 # Linux系统：进入redis安装目录启动redis服务
 
@@ -43,6 +37,7 @@ sudo vim /etc/redis/redis.conf
 #requirepass foobared
 #修改成：
 requirepass your_pwd #设置新的密码
+port 6379
 ```
 1.shutdown
 2.ping
