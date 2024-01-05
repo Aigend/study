@@ -1,12 +1,9 @@
-# py_redis
-python redis 学习
-
-sudo apt-get install redis-server
-
-sudo apt update
-sudo apt install redis-server
+# python redis 学习
 
 ```
+sudo apt-get install redis-server
+sudo apt update
+sudo apt install redis-server
 # 查看状态
 systemctl status redis-server.service
 # 启动
@@ -18,26 +15,22 @@ systemctl restart redis-server.service
 # 设置开机启动
 systemctl enable redis-server.service
 ```
-# Linux系统：进入redis安装目录启动redis服务
 
-redis-server /etc/redis/redis.conf 
-
-# 打开redis交互命令行，用于测试(可选)
-
-redis-cli.exe -h 127.0.0.1 -p 6379 # windows系统下另打开一个窗口
-
-redis-cli # linux系统
+### Linux系统：进入redis安装目录启动redis服务
 ```
-由于redis默认绑定本机的，所以第一步取消该设置：
-#编辑配置文件
+redis-server /etc/redis/redis.conf 
+```
+### 打开redis交互命令行，用于测试(可选)
+```
+redis-cli.exe -h 127.0.0.1 -p 6379 # windows系统下另打开一个窗口
+redis-cli # linux系统
+由于redis默认绑定本机的，所以第一步取消该设置：编辑配置文件
 sudo vim /etc/redis/redis.conf
-用vim打开该配置文件后，注释掉下面这行：
-# bind 127.0.0.1
-#找到下面这一行并去除注释，未修改之前：
-#requirepass foobared
-#修改成：
-requirepass your_pwd #设置新的密码
-port 6379
+用vim打开该配置文件后，注释掉下面这行：# bind 127.0.0.1
+找到下面这一行并去除注释，未修改之前：# requirepass foobared
+修改成：
+  requirepass your_pwd #设置新的密码
+  port 6379
 ```
 1.shutdown
 2.ping
